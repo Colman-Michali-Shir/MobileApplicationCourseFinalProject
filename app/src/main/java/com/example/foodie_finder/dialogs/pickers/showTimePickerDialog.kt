@@ -1,9 +1,9 @@
-package com.example.mobile_application_course.dialogs.pickers
+package com.example.foodie_finder.dialogs.pickers
 
 import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.EditText
-import com.example.mobile_application_course.utils.DateTimeUtils
+import com.example.foodie_finder.utils.DateTimeUtils
 import java.util.Calendar
 
 fun showTimePickerDialog(v: EditText, context: Context?) {

@@ -1,11 +1,11 @@
-package com.example.mobile_application_course.adapter
+package com.example.foodie_finder.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobile_application_course.interfaces.OnItemClickListener
-import com.example.mobile_application_course.R
-import com.example.mobile_application_course.model.Student
+import com.example.foodie_finder.interfaces.OnItemClickListener
+import com.example.foodie_finder.databinding.StudentListRowBinding
+import com.example.foodie_finder.model.Student
 
 class StudentsRecyclerAdapter(private var students: List<Student>?) :
     RecyclerView.Adapter<StudentViewHolder>() {
@@ -21,14 +21,9 @@ class StudentsRecyclerAdapter(private var students: List<Student>?) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
-        val view =
-            inflater.inflate(
-                R.layout.student_list_row,
-                parent,
-                false
-            )
-
-        return StudentViewHolder(view, listener)
+        val binding = StudentListRowBinding.inflate(inflater, parent, false)
+        
+        return StudentViewHolder(binding, listener)
     }
 
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {

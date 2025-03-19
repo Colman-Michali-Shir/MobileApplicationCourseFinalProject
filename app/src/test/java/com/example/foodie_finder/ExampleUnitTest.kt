@@ -1,4 +1,4 @@
-package com.example.mobile_application_course
+package com.example.foodie_finder
 
 import org.junit.Test
 

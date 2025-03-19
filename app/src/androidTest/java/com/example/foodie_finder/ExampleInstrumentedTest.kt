@@ -1,4 +1,4 @@
-package com.example.mobile_application_course
+package com.example.foodie_finder
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.example.mobile_application_course.dialogs.alert
+package com.example.foodie_finder.dialogs.alert
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog

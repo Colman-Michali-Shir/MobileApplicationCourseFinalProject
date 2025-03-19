@@ -1,6 +1,5 @@
-package com.example.mobile_application_course.utils
+package com.example.foodie_finder.utils
 
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
