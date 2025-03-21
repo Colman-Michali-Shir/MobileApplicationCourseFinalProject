@@ -3,8 +3,6 @@ package com.example.mobile_application_course
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,7 @@ import com.example.mobile_application_course.model.Model
 import com.example.mobile_application_course.model.Student
 import com.example.mobile_application_course.utils.DateTimeUtils
 
-class StudentDetailsFragment : Fragment() {
+class PostDetailsFragment : Fragment() {
 
     private var student: Student? = null
     private var currentPosition: Int = 0
@@ -33,7 +31,7 @@ class StudentDetailsFragment : Fragment() {
         setHasOptionsMenu(true)
 
         currentPosition = arguments?.let {
-            StudentDetailsFragmentArgs.fromBundle(it).position
+            PostDetailsFragmentArgs.fromBundle(it).position
         } ?: 0
     }
 
@@ -48,7 +46,7 @@ class StudentDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_student_details, container, false)
+        val view = inflater.inflate(R.layout.fragment_post_details, container, false)
 
         setUp(view)
 
@@ -57,8 +55,8 @@ class StudentDetailsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.editStudentFragment -> {
-                val action = StudentDetailsFragmentDirections
+            R.id.editPostFragment -> {
+                val action = PostDetailsFragmentDirections
                     .actionStudentDetailsFragmentToEditStudentFragment(currentPosition)
                 findNavController().navigate(action)
                 true
