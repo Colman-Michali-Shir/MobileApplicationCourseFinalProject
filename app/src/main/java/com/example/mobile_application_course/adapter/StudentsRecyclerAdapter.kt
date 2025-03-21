@@ -23,7 +23,7 @@ class StudentsRecyclerAdapter(private var students: List<Student>?) :
 
         val view =
             inflater.inflate(
-                R.layout.student_list_row,
+                R.layout.post_list_row,
                 parent,
                 false
             )

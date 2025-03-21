@@ -13,7 +13,7 @@ import com.example.mobile_application_course.model.Model
 import com.example.mobile_application_course.model.Student
 import com.example.mobile_application_course.adapter.StudentsRecyclerAdapter
 
-class StudentsListFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     private var students: MutableList<Student>? = null
     private var recyclerView: RecyclerView? = null
@@ -24,7 +24,7 @@ class StudentsListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_students_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_posts_list, container, false)
 
         students = Model.shared.students
 
@@ -39,7 +39,7 @@ class StudentsListFragment : Fragment() {
         adapter.listener = object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val action =
-                    StudentsListFragmentDirections.actionStudentsListFragmentToStudentDetailsFragment(
+                    HomeFragmentDirections.actionStudentsListFragmentToStudentDetailsFragment(
                         position
                     )
                 Navigation.findNavController(view).navigate(action)

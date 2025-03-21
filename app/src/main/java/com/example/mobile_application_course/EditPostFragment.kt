@@ -17,22 +17,29 @@ import com.example.mobile_application_course.dialogs.pickers.showTimePickerDialo
 import com.example.mobile_application_course.utils.DateTimeUtils
 import java.sql.Time
 
-class NewStudentFragment : Fragment() {
+
+class EditPostFragment : Fragment() {
+    private var students: MutableList<Student>? = null
+    private var student: Student? = null
+    private var position: Int = 0
 
     private var saveButton: Button? = null
     private var cancelButton: Button? = null
+    private var deleteButton: Button? = null
     private var nameEditText: EditText? = null
     private var idEditText: EditText? = null
     private var phoneEditText: EditText? = null
     private var addressEditText: EditText? = null
-    private var checkBox: CheckBox? = null
     private var birthDateEditText: EditText? = null
     private var birthTimeEditText: EditText? = null
-
+    private var checkBox: CheckBox? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+
+        position = arguments?.let {
+            EditPostFragmentArgs.fromBundle(it).position
+        } ?: 0
     }
 
     override fun onCreateView(
@@ -40,18 +47,23 @@ class NewStudentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_new_student, container, false)
+        val view = inflater.inflate(R.layout.fragment_edit_post, container, false)
 
         setUp(view)
+
         cancelButton?.setOnClickListener(::onCancelClicked)
         saveButton?.setOnClickListener(::onSaveClicked)
+        deleteButton?.setOnClickListener(::onDeleteClicked)
 
         return view
     }
 
     private fun setUp(view: View) {
-        saveButton = view.findViewById(R.id.add_student_fragment_save_button)
-        cancelButton = view.findViewById(R.id.add_student_fragment_cancel_button)
+        students = Model.shared.students
+
+        saveButton = view.findViewById(R.id.edit_student_fragment_save_button)
+        cancelButton = view.findViewById(R.id.edit_student_fragment_cancel_button)
+        deleteButton = view.findViewById(R.id.edit_student_fragment_delete_button)
         nameEditText = view.findViewById(R.id.student_name_edit_text)
         idEditText = view.findViewById(R.id.student_id_edit_text)
         phoneEditText = view.findViewById(R.id.student_phone_edit_text)
@@ -60,32 +72,70 @@ class NewStudentFragment : Fragment() {
         birthDateEditText = view.findViewById(R.id.student_birth_date_edit_text)
         birthTimeEditText = view.findViewById(R.id.student_birth_time_edit_text)
 
+        student = Model.shared.getStudentInPosition(position)
+
+        student?.let {
+            nameEditText?.setText(it.name)
+            idEditText?.setText(it.id)
+            phoneEditText?.setText(it.phone)
+            addressEditText?.setText(it.address)
+            checkBox?.isChecked = it.isChecked
+            birthDateEditText?.setText(it.birthDate?.let { birthDate ->
+                DateTimeUtils.formatDate(
+                    birthDate
+                )
+            })
+            birthTimeEditText?.setText(it.birthTime?.let { birthTime ->
+                DateTimeUtils.formatTime(
+                    birthTime
+                )
+            })
+        }
+
         birthDateEditText?.let { showDatePickerDialog(it, context) }
         birthTimeEditText?.let { showTimePickerDialog(it, context) }
     }
 
     private fun onSaveClicked(view: View) {
-        val newStudent = Student(
-            name = nameEditText?.text.toString(),
-            id = idEditText?.text.toString(),
-            phone = phoneEditText?.text.toString(),
-            address = addressEditText?.text.toString(),
-            avatarUrl = null,
-            isChecked = checkBox?.isChecked ?: false,
-            birthDate = birthDateEditText?.text.toString().takeIf { it.isNotBlank() }
-                ?.let { DateTimeUtils.parseDate(it) },
-            birthTime = birthTimeEditText?.text.toString().takeIf { it.isNotBlank() }?.let {
+        val updatedName = nameEditText?.text.toString()
+        val updatedId = idEditText?.text.toString()
+        val updatedPhone = phoneEditText?.text.toString()
+        val updatedAddress = addressEditText?.text.toString()
+        val updatedIsChecked = checkBox?.isChecked ?: false
+        val updatedBirthDate = birthDateEditText?.text.toString()
+        val updatedBirthTime = birthTimeEditText?.text.toString()
+
+        student?.apply {
+            id = updatedId
+            name = updatedName
+            phone = updatedPhone
+            address = updatedAddress
+            isChecked = updatedIsChecked
+            birthDate = updatedBirthDate.takeIf { it.isNotBlank() }
+                ?.let { DateTimeUtils.parseDate(it) }
+            birthTime = updatedBirthTime.takeIf { it.isNotBlank() }?.let {
                 DateTimeUtils.parseTime(it)?.let { birthTime -> Time(birthTime.time) }
             }
-        )
-        Model.shared.addStudent(newStudent)
-        context?.let {
-            showSuccessOperationDialog(it, "add")
         }
+
+        context?.let {
+            showSuccessOperationDialog(it, "edit")
+        }
+
         Navigation.findNavController(view).popBackStack()
     }
 
     private fun onCancelClicked(view: View) {
         Navigation.findNavController(view).popBackStack()
     }
+
+    private fun onDeleteClicked(view: View) {
+        students?.removeAt(position)
+
+        Navigation.findNavController(view).popBackStack(
+            R.id.homeFragment,
+            false
+        )
+    }
+
 }
